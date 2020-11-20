@@ -2,7 +2,7 @@
 name: question template
 about: Describe this issue template's purpose here.
 title: "[0-0장] 간단한 제목"
-labels: Stuck
+labels:
 assignees: ''
 
 ---
