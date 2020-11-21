@@ -1,0 +1,17 @@
+version: '3'
+services:
+  maria:
+    image: mariadb:10.4
+    container_name: real-my-sql
+    restart: always
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rms
+      TZ: Asia/Seoul
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/log:/var/log/maria
+      - ./mariadb/conf:/etc/mysql/conf.d
+      - ./mariadb/init/:/docker-entrypoint-initdb.d/
