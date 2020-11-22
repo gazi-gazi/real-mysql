@@ -1,79 +1,69 @@
--- 스키마 생성 시작
+create table departments (
+    dept_no char(4) not null,
+    dept_name varchar(40) not null,
+    primary key (dept_no),
+    key ux_deptname (dept_name)
+) ENGINE=InnoDB;
 
-CREATE TABLE departments (
-    dept_no CHAR(4) NOT NULL,
-    dept_name VARCHAR(40) NOT NULL,
-    PRIMARY KEY (dept_no)
-);
+create table employees (
+    emp_no int(11) not null,
+    birth_date date not null,
+    first_name varchar(14) not null,
+    last_name varchar(16) not null,
+    gender enum('M', 'F') not null,
+    hire_date date not null,
+    primary key (emp_no),
+    key ix_firstname (first_name),
+    key ix_hiredate (hire_date)
+) ENGINE=InnoDB;
 
-CREATE UNIQUE INDEX UX_DEPTNAME ON departments(dept_name);
-
-CREATE TABLE employees (
-    emp_no BIGINT(20) NOT NULL,
-    birth_date DATE NOT NULL,
-    first_name VARCHAR(14) NOT NULL,
-    last_name VARCHAR(16) NOT NULL,
-    gender ENUM('M','F') NOT NULL,
-    hire_date DATE NOT NULL,
-    PRIMARY KEY (emp_no)
-);
-
-CREATE INDEX IX_FIRSTNAME ON employees (first_name);
-CREATE INDEX IX_HIREDATE ON employees (hire_date);
-
-CREATE TABLE salaries (
-    emp_no BIGINT(20) NOT NULL,
-    salary BIGINT(20) NOT NULL,
-    from_date DATE NOT NULL,
-    to_date DATE NOT NULL,
-    PRIMARY KEY (emp_no, from_date)
-);
-
-CREATE INDEX IX_SALARY ON salaries (salary);
+create table salaries (
+    emp_no int(11) not null,
+    salary int(11) not null,
+    from_date date not null,
+    to_date date not null,
+    primary key (emp_no, from_date),
+    key ix_salary (salary)
+) ENGINE=InnoDB;
 
 
-CREATE TABLE dept_emp (
-    emp_no BIGINT(20) NOT NULL,
-    dept_no char(4) NOT NULL,
-    from_date DATE NOT NULL,
-    to_date DATE NOT NULL,
-    PRIMARY KEY (dept_no, emp_no)
-);
+create table dept_emp (
+    emp_no int(11) not null,
+    dept_no char(4) not null,
+    from_date date not null,
+    to_date date not null,
+    primary key (dept_no, emp_no),
+    key ix_fromdate (from_date),
+    key ix_empno_fromdate (emp_no, from_date)
+) ENGINE=InnoDB;
 
-CREATE INDEX IX_FROMDATE ON dept_emp (from_date);
-CREATE INDEX IX_EMPNO_FROMDATE ON dept_emp (emp_no, from_date);
+create table dept_manager (
+    dept_no char(4) not null,
+    emp_no int(11) not null,
+    from_date date not null,
+    to_date date not null,
+    primary key (dept_no, emp_no)
+) ENGINE=InnoDB;
 
-CREATE TABLE dept_manager (
-    dept_no CHAR(4) NOT NULL,
-    emp_no BIGINT(20) NOT NULL,
-    from_date DATE NOT NULL,
-    to_date DATE NOT NULL,
-    PRIMARY KEY (dept_no, emp_no)
-);
 
-CREATE TABLE titles (
-    emp_no BIGINT(20) NOT NULL,
-    title VARCHAR(50) NOT NULL,
-    from_date DATE NOT NULL,
-    to_date DATE DEFAULT NULL,
-    PRIMARY KEY (emp_no, from_date, title)
-);
+create table titles (
+    emp_no int(11) not null,
+    title varchar(50) not null,
+    from_date date not null,
+    to_date date default null,
+    primary key (emp_no, from_date, title),
+    key ix_todate (to_date)
+) ENGINE=InnoDB;
 
-CREATE INDEX IX_TODATE ON titles (to_date);
+create table employee_name (
+    emp_no int(11) not null,
+    first_name varchar(14) not null,
+    last_name varchar(16) not null,
+    primary key (emp_no),
+    fulltext key fx_name (first_name, last_name)
+) ENGINE=MyISAM;
 
-CREATE TABLE employee_name (
-    emp_no BIGINT(20) NOT NULL,
-    first_name VARCHAR(14) NOT NULL,
-    last_name VARCHAR(16) NOT NULL,
-    PRIMARY KEY (emp_no)
-);
-
-CREATE FULLTEXT INDEX FX_NAME ON employee_name (first_name, last_name);
-
-CREATE TABLE tb_dual (
-    fd1 TINYINT(4) NOT NULL,
-    PRIMARY KEY (fd1)
-);
-
--- 스키마 생성 끝
-
+create table tb_dual (
+    fd1 tinyint(4) not null,
+    primary key (fd1)
+) ENGINE=InnoDB;

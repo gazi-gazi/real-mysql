@@ -12,6 +12,6 @@ services:
       TZ: Asia/Seoul
     volumes:
       - ./mysql/data:/var/lib/mysql
-      - ./mysql/log:/var/log/maria
+      - ./mysql/log:/var/log/mysql
       - ./mysql/conf:/etc/mysql/conf.d
       - ./mysql/init/:/docker-entrypoint-initdb.d/
