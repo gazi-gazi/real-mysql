@@ -20,6 +20,6 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-## Docker MariaDB
-**/docker/mariadb/data/
-**/docker/mariadb/log/
+## Docker MySQLDB
+**/docker/mysql/data/
+**/docker/mysql/log/

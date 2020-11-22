@@ -6,7 +6,7 @@ CREATE TABLE departments (
     PRIMARY KEY (dept_no)
 );
 
-CREATE INDEX UX_DEPTNAME ON departments(dept_name);
+CREATE UNIQUE INDEX UX_DEPTNAME ON departments(dept_name);
 
 CREATE TABLE employees (
     emp_no BIGINT(20) NOT NULL,

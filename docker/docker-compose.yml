@@ -1,7 +1,7 @@
 version: '3'
 services:
   maria:
-    image: mariadb:10.4
+    image: mysql:5.7
     container_name: real-my-sql
     restart: always
     ports:
@@ -11,7 +11,7 @@ services:
       MYSQL_DATABASE: rms
       TZ: Asia/Seoul
     volumes:
-      - ./mariadb/data:/var/lib/mysql
-      - ./mariadb/log:/var/log/maria
-      - ./mariadb/conf:/etc/mysql/conf.d
-      - ./mariadb/init/:/docker-entrypoint-initdb.d/
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/log:/var/log/maria
+      - ./mysql/conf:/etc/mysql/conf.d
+      - ./mysql/init/:/docker-entrypoint-initdb.d/
