@@ -2,21 +2,23 @@
 
 `EXPLAIN` 키워드를 쿼리 앞에 붙여서 쿼리의 실행 계획을 확인할 수 있다.
 
-[1. 쿼리 실행 절차 ](#쿼리 실행 절차)
+[1. 쿼리 실행 절차 ](#쿼리-실행-절차)
 
-[2. 실행 계획 분석](#6.2 실행 계획 분석)
+[2. 실행 계획 분석](#6.2-실행-계획-분석)
 
-​	[2.1 id 컬럼](#6.2.1 id 칼럼)
+​	[2.1 id 컬럼](#6.2.1-id-칼럼)
 
-​	[2.2 select_type 컬럼](#6.2.2 select_type 컬럼)
+​	[2.2 select_type 컬럼](#6.2.2-select-type-컬럼)
 
-​	[2.3 table 컬럼](#6.2.3 table 컬럼)
+​	[2.3 table 컬럼](#6.2.3-table-컬럼)
+
+​	[2.4 type 컬럼](6.2.4-type-컬럼)
 
 ## 6.1 개요
 
 ### 쿼리 실행 절차
 
-1.  **SQL 파싱** *by SQL 파서*
+1. **SQL 파싱** *by SQL 파서*
 
    SQL 파서가 사용자로부터 요청된 SQL 문장을 잘게 쪼개서 MySQL 서버가 이해할 수 있는 수준으로 분리한다.
 
@@ -80,14 +82,7 @@ ANALYZE TABLE [테이블명];
 
 ![image](https://user-images.githubusercontent.com/19922698/99898734-1b2e0380-2ce7-11eb-91d2-491702a6cbcc.png)
 
-[2020-11-22 19:43:16] [HY000][1003] /* select#1 */ select `rms`.`employees`.`emp_no` AS `emp_no`,`rms`.`employees`.`birth_date` AS `birth_date`,`rms`.`s`.`emp_no` AS `emp_no`,`rms`.`s`.`salary` AS `salary`,`rms`.`s`.`from_date` AS `from_date`,`rms`.`s`.`to_date` AS `to_date` from `rms`.`employees` join `rms`.`salaries` `s` where (`rms`.`s`.`emp_no` = `rms`.`employees`.`emp_no`)
-[
-
-
-
-<br/>
-
-- 쿼리 문장에서 사용한 **테이블 개수만큼** 표의 행*(여기서는 2개)*이 출력된다. *(❗️SELECT 개수만큼이 아니라 테이블 개수만큼)*
+- 쿼리 문장에서 사용한 **테이블 개수만큼** 표의 행 *(여기서는 2개)* 이 출력된다. *(❗️SELECT 개수만큼이 아니라 테이블 개수만큼)*
 - 실행 순서는 위에서 아래로 표시된다. *(❗️UNION이나 상관 서브 쿼리는 아닐 수도 있다.)*
 - SELECT만 가능하다. (UPDATE, INSERT, DELETE는 X)
 
@@ -182,7 +177,7 @@ ANALYZE TABLE [테이블명];
 
 #### `UNCACHEABLE SUBQUERY`
 
-- 캐싱이 안 되는 서브쿼리 (원래 서브쿼리는 캐싱을 한다. *≠ 쿼리 캐시, ≠ DERIVED*)
+- **캐싱이 안 되는 서브쿼리** (원래 서브쿼리는 캐싱을 한다. *≠ 쿼리 캐시, ≠ DERIVED*)
 
 - 조건이 똑같은 서브쿼리가 실행될 때는 다시 실행하지 않고 이전의 실행 결과를 그대로 사용할 수 있게 내부 캐시 공간에 담아둔다.
 
@@ -217,19 +212,147 @@ ANALYZE TABLE [테이블명];
 
 - 위의 uncacheable의 조건과 UNION이 결합된 쿼리.
 
+  
+
 <br/>
 
 ### 6.2.3 table 컬럼
 
-> 테이블의 이름(별칭이 있다면 별칭)
+> 테이블의 이름(별칭이 있다면 별칭)이 출력된다.
 
 ❗️MySQL의 실행 계획은 단위 쿼리 기준이 아니라 테이블 기준으로 표시된다.
 
+![image](https://user-images.githubusercontent.com/19922698/99904595-37459b00-2d0f-11eb-8a0f-f9ac411906d6.png)
 
 
 
+<br/>
+
+### 6.2.4 type 컬럼
+
+> 각 테이블의 레코드를 어떤 방식으로 읽는지
+
+MySQL에서는 **조인 타입**이라고도 한다.
+
+타입의 종류에는 (MySQL에서 성능이 빠른 순서대로) `system` `const` `eq_ref` `ref` `fulltext` `ref_or_null` `unique_subquery` `index_subquery` `range` `index_merge` `index` `ALL` 이 있다.
+
+- ALL은 풀 스캔, ALL 이외의 나머지는 인덱스를 사용한다.
+- `index_merge`를 제외하고는 반드시 하나의 인덱스만 사용한다.
+- 옵티마이저는 이런 접근 방식과 비용을 함께 계산해서 최소 비용을 선택한다.
 
 
 
+### `system`
+
+- **레코드가 1건 또는 없는 테이블**
+
+- MyISAM이나 MEMORY 테이블에서만 사용된다. (InnoDB는 index로 표현)
+
+<br/>
+
+### `const`
+
+- **반드시 1건을 반환하는 쿼리** (그래서 const, 다른 DBMS에서는 UNIQUE INDEX SCAN이라고도 한다.)
+- PK나 UK를 이용해 **동등 조건(= 또는 <=>)**으로 검색한다. (다중 컬럼으로 구성된 PK, UK도 해당 컬럼들을 다 조건에 명시하면 가능)
+- ![image](https://user-images.githubusercontent.com/19922698/99905862-f487c100-2d16-11eb-8dd5-a814455f797b.png)
 
 
+
+`동등 조건`?
+
+![image-20201122235232325](/Users/yebin/Library/Application Support/typora-user-images/image-20201122235232325.png)
+
+
+
+<br/>
+
+### `eq_ref`
+
+- 조인 쿼리에서 발생
+- ![image](https://user-images.githubusercontent.com/19922698/99906357-0323a780-2d1a-11eb-8865-ddbbbb62a8c0.png)
+
+- **조인에서 처음 읽은 테이블의 컬럼 값을, 그 다음 읽어야 할 테이블의 PK(UK) 검색 조건에 사용할 때**
+- 두 번째 이후에 읽는 테이블의 type 컬럼에 eq_ref가 표시된다.
+- 조인에서 두 번째 이후에 읽는 테이블에서 반드시 1건을 리턴해야 한다.
+  - 두 번째 이후에 읽히는 테이블을 UK로 검색할 때 그 UK는 NOT NULL이어야 하고,
+  - 다중 컬럼 PK(UK)라면 모든 컬럼을 비교 조건에 사용해야 한다.
+
+<br/>
+
+### `ref`
+
+- 조인 순서, 인덱스 종류 관계 없이 **동등 조건(= 또는 <=>)으로 검색**하면 사용된다.
+- PK, UK 등의 제약 조건도 없다.
+- ![image](https://user-images.githubusercontent.com/19922698/99906544-09feea00-2d1b-11eb-97ee-e804169ac322.png)
+
+<br/>
+
+### `fulltext`
+
+- **FULLTEXT 인덱스**를 사용해 읽는 방법 (검색에 주로 사용되는 기능이다.)
+
+  - `CREATE FULLTEXT INDEX 인덱스명 ON 테이블명(칼럼명);`
+
+  - 일반적인 인덱스보다 매우 빠르다.
+
+- **`MATCH ... AGAINST ...` 구문으로 실행**한다.
+
+- ![image](https://user-images.githubusercontent.com/19922698/99907358-be027400-2d1f-11eb-9871-7e13f3527ee4.png)
+
+<br/>
+
+### `ref_or_null`
+
+- **ref와 같고, NULL 비교가 추가**된 형태이다.
+- ![image](https://user-images.githubusercontent.com/19922698/99907424-0c177780-2d20-11eb-817b-58069746ec40.png)
+
+<br/>
+
+### `unique_subquery`
+
+- IN (subquery) 형태에서 **서브쿼리에서 중복 없는 유니크한 값이 반환될 때**
+- WHERE 조건절에서 사용될 수 있는 IN 형태의 쿼리를 위한 접근방식이다.
+
+<br/>
+
+### `index_subquery`
+
+- IN (subquery) 형태에서 **중복 값이 있을 수 있지만 인덱스를 이용해 중복 값을 제거할 때**
+
+<br/>
+
+### `range`
+
+- **범위**로 검색. ( `<`, `>`, `IS NULL`, `BETWEEN`, `IN`, `LIKE` 등)
+- 일반적으로 애플리케이션 쿼리가 가장 많이 사용하는 방법 (얘도 상당히 빠르다.)
+
+<br/>
+
+### `index_merge` :frowning_face:
+
+- **2개 이상의 인덱스를 이용**해 각각의 검색 결과를 만들어낸 후 그 결과를 병합 처리
+  - 전문 검색 인덱스 사용 시 적용 불가능.
+  - 검색 결과에 대해 부가적인 작업(교집합, 합집합, 중복제거 등)이 필요하다. 
+
+<br/>
+
+### `index` :frowning_face:
+
+- = 인덱스 풀스캔
+
+- range, const, ref 같은 접근 방식으로 인덱스를 사용하지 못하는 경우이면서 **(WHERE 조건절이 없음)** (1)
+
+- 인덱스에 포함된 칼럼만으로 처리할 수 있는 쿼리일 경우(2) or 인덱스를 이용해 정렬, 그룹핑 작업이 가능한 경우(3)
+
+- ![image](https://user-images.githubusercontent.com/19922698/99938327-e5eae980-2daa-11eb-9e21-d8d05c129043.png)
+
+  이 경우는 (1) + (3)
+
+<br/>
+
+### `all` :frowning_face:
+
+- 우리가 아는 풀 테이블 스캔.
+- **테이블을 처음부터 끝까지 다 읽는다.**
+- InnoDB는 **Read Ahead**를 제공해 한 번에 여러 페이지를 읽어서 처리하도록 한다. (최대 64개의 페이지씩 한 번에 읽어들인다.)
+  - 버퍼에 7번 페이지를 읽어달라고 요청이 오면, 8번 페이지도 곧 읽기 요청이 올 것이라고 예상하고, 미리 7, 8번 페이지를 같이 읽어들이는 기법.
