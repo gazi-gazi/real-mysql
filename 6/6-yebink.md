@@ -6,7 +6,7 @@
 
 [2. 실행 계획 분석](#6.2-실행-계획-분석)
 
-​	[2.1 id 컬럼](#6.2.1-id-칼럼)
+​	[2.1 id 컬럼](#6.2.1-id-컬럼)
 
 ​	[2.2 select_type 컬럼](#6.2.2-select-type-컬럼)
 
@@ -260,9 +260,7 @@ MySQL에서는 **조인 타입**이라고도 한다.
 
 `동등 조건`?
 
-![image-20201122235232325](/Users/yebin/Library/Application Support/typora-user-images/image-20201122235232325.png)
-
-
+![image](https://user-images.githubusercontent.com/19922698/100316545-15ddfb00-2ffe-11eb-9a63-f0a0bcc457e3.png)
 
 <br/>
 
