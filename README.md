@@ -6,3 +6,5 @@
 
 (2주차) `6.2.5` ~ `6.2.13` [정리](6/6.2.5_6.2.13/README.md)
 
+(3주차) `6.2.14` ~ `*` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/6/6.3_*/README.md)
+
