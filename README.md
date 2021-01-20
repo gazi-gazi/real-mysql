@@ -17,3 +17,6 @@
 ### 7장. 쿼리 작성 및 최적화
 
 (7주차) `7.1` ~ `7.3` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.1_7.3/README.md)
+
+(8주차)`7.4` ~ `7.4.6` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.4_7.4.6/README.md)
+
