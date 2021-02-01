@@ -20,3 +20,4 @@
 
 (8주차)`7.4` ~ `7.4.6` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.4_7.4.6/README.md)
 
+(9주차)`7.5` ~ `7.7` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.5_7.7/README.md)
