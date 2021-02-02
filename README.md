@@ -18,6 +18,6 @@
 
 (7주차) `7.1` ~ `7.3` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.1_7.3/README.md)
 
-(8주차)`7.4` ~ `7.4.6` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.4_7.4.6/README.md)
+(8주차)`7.4` ~ `7.4.6` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.4.7_7.4.12/7.4.7_7.4.12_toneypakry.md)
 
-(9주차)`7.5` ~ `7.7` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.5_7.7/README.md)
+(9주차)`7.5` ~ `7.7` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.5_7.7/7.5_7.7_lxxjn0.md)
