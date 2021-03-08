@@ -21,3 +21,19 @@
 (8주차)`7.4` ~ `7.4.6` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.4.7_7.4.12/7.4.7_7.4.12_toneypakry.md)
 
 (9주차)`7.5` ~ `7.7` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.5_7.7/7.5_7.7_lxxjn0.md)
+
+(10주차)`7.8` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/7/7.8/7.8_lxxjn0.md)
+
+(11주차)`7.9` ~ `7.10` [정리](https://github.com/gazi-gazi/real-mysql/tree/main/7/7.9_7.10/7.9_lavine.md)
+
+
+### 4장. 트랜잭션과 잠금
+
+(12주차)`4.1` ~ `4.5` [정리](https://github.com/gazi-gazi/real-mysql/blob/main/4/4.1_4.5_yebink.md)
+
+---
+
+20.11.23 ~ 21.03.08 1차 디비디비딥 스터디 종료 
+
+---
+
